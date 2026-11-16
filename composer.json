@@ -1,0 +1,21 @@
+{
+    "name": "smithy/protocol-aws",
+    "description": "AWS protocol implementations (JSON 1.0/1.1, REST JSON, REST XML, Query, EC2 Query) for Smithy PHP.",
+    "type": "library",
+    "license": "Apache-2.0",
+    "require": {
+        "ext-libxml": "*",
+        "ext-simplexml": "*",
+        "php": ">=8.2",
+        "psr/http-message": "^2.0",
+        "smithy/codec": "self.version",
+        "smithy/core": "self.version",
+        "smithy/http": "self.version",
+        "smithy/protocol": "self.version"
+    },
+    "autoload": {
+        "psr-4": {
+            "Smithy\\Protocol\\Aws\\": ""
+        }
+    }
+}
