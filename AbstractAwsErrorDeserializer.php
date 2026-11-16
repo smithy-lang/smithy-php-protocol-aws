@@ -44,7 +44,7 @@ abstract class AbstractAwsErrorDeserializer extends HttpErrorDeserializer
             );
         }
 
-        return new $errorClass(
+        $error = new $errorClass(
             message: self::defaultMessage($response, $discriminator, $message),
             fault: $this->resolveFault($response),
             previous: $previous,
@@ -52,6 +52,36 @@ abstract class AbstractAwsErrorDeserializer extends HttpErrorDeserializer
             requestId: $requestId,
             httpStatusCode: $response->getStatusCode()
         );
+        $retryAfter = self::parseRetryAfter($response);
+        if ($retryAfter !== null) {
+            $error->setRetryAfter($retryAfter);
+        }
+
+        return $error;
+    }
+
+    /**
+     * Parse a `Retry-After` / `x-amz-retry-after` header into seconds.
+     *
+     * `x-amz-retry-after` is milliseconds; a numeric `Retry-After` is seconds.
+     * The HTTP-date form of `Retry-After` is not honored (AWS services send
+     * the numeric form). Returns null when absent or unparseable.
+     */
+    private static function parseRetryAfter(
+        ResponseInterface $response
+    ): ?float
+    {
+        $amzMillis = $response->getHeaderLine('x-amz-retry-after');
+        if ($amzMillis !== '' && \is_numeric($amzMillis)) {
+            return (float) $amzMillis / 1000.0;
+        }
+
+        $retryAfter = $response->getHeaderLine('retry-after');
+        if ($retryAfter !== '' && \is_numeric($retryAfter)) {
+            return (float) $retryAfter;
+        }
+
+        return null;
     }
 
     /**
