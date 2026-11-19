@@ -12,6 +12,19 @@ This package owns the `Smithy\Protocol\Aws` namespace, a sub-namespace of
 composer require smithy/protocol-aws
 ```
 
+## AWS errors
+
+Unmodeled errors are built from the operation's service exception class when
+it implements `AwsErrorInterface`, and from `AwsProtocolException` otherwise.
+The deserializer calls `fromAwsError()` with the AWS error code, request ID and
+HTTP status, and calls `setRetryAfter()` when the response has a `Retry-After`
+hint. Modeled errors that implement `AwsErrorInterface` receive the same
+metadata through `setAwsErrorMetadata()` after their members are
+deserialized; the envelope message becomes the exception message when the
+modeled message is empty. `AwsErrorRetryTrait` supplies the status-based
+retry classification, so SDK base exceptions can implement the interface on
+their own hierarchy.
+
 ## AWS JSON
 
 `AwsJson1_0Protocol` implements `aws.protocols#awsJson1_0` with AWS JSON RPC
