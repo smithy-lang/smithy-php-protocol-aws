@@ -15,14 +15,19 @@ use Smithy\Core\Exception\ErrorFault;
 /**
  * Base exception for errors returned by AWS protocols.
  *
- * Carries the AWS error code, request ID and HTTP status, and takes
- * its retry classification from {@see AwsErrorRetryTrait}.
+ * Carries the AWS error code, request ID, extended request ID and HTTP
+ * status, and takes its retry classification from
+ * {@see AwsErrorRetryTrait}.
  *
  * @phpstan-consistent-constructor
  */
-class AwsProtocolException extends ApiException implements AwsErrorInterface
+class AwsProtocolException extends ApiException implements
+    AwsErrorInterface,
+    AwsExtendedRequestIdInterface
 {
     use AwsErrorRetryTrait;
+
+    private ?string $extendedRequestId = null;
 
     /**
      * Create an AWS protocol error with response metadata.
@@ -63,6 +68,18 @@ class AwsProtocolException extends ApiException implements AwsErrorInterface
     public function getHttpStatusCode(): ?int
     {
         return $this->httpStatusCode;
+    }
+
+    /** @inheritDoc */
+    public function getExtendedRequestId(): ?string
+    {
+        return $this->extendedRequestId;
+    }
+
+    /** @inheritDoc */
+    public function setExtendedRequestId(?string $extendedRequestId): void
+    {
+        $this->extendedRequestId = $extendedRequestId;
     }
 
     /**

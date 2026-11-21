@@ -25,6 +25,11 @@ modeled message is empty. `AwsErrorRetryTrait` supplies the status-based
 retry classification, so SDK base exceptions can implement the interface on
 their own hierarchy.
 
+Read the metadata with `getAwsErrorCode()`, `getAwsRequestId()` and
+`getHttpStatusCode()`. Errors that implement `AwsExtendedRequestIdInterface`
+(including `AwsProtocolException`) also carry an extended request ID, such as
+the Amazon S3 `x-amz-id-2` value, through `getExtendedRequestId()`.
+
 ## AWS JSON
 
 `AwsJson1_0Protocol` implements `aws.protocols#awsJson1_0` with AWS JSON RPC

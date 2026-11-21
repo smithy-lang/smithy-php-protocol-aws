@@ -34,6 +34,21 @@ interface AwsErrorInterface
     ): static;
 
     /**
+     * Return the AWS error discriminator.
+     */
+    public function getAwsErrorCode(): ?string;
+
+    /**
+     * Return the AWS response request ID.
+     */
+    public function getAwsRequestId(): ?string;
+
+    /**
+     * Return the HTTP response status code.
+     */
+    public function getHttpStatusCode(): ?int;
+
+    /**
      * Set the AWS error metadata of a deserialized error.
      *
      * Replaces the error code, request ID and HTTP status. `$message`
