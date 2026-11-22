@@ -11,6 +11,8 @@ namespace Smithy\Protocol\Aws;
 
 use Psr\Http\Message\ResponseInterface;
 use Smithy\Core\Exception\ApiException;
+use Smithy\Core\Exception\ErrorFault;
+use Smithy\Core\Serde\Schema;
 use Smithy\Core\Shape\OperationInterface;
 use Smithy\Http\Message\Response;
 use Smithy\Protocol\HttpErrorDeserializer;
@@ -24,6 +26,17 @@ use Smithy\Protocol\HttpErrorDeserializer;
  */
 abstract class AbstractAwsErrorDeserializer extends HttpErrorDeserializer
 {
+    /** @inheritDoc */
+    protected function createDocumentError(
+        Schema $schema,
+        array $members,
+        string $message,
+        ErrorFault $fault
+    ): \Throwable
+    {
+        return new AwsDocumentException($schema, $members, $message, $fault);
+    }
+
     protected function decorateModeledError(
         \Throwable $error,
         OperationInterface $operation,
