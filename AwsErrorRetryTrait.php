@@ -18,8 +18,8 @@ use Smithy\Core\Retry\RetrySafety;
  * {@see \Smithy\Core\Exception\ApiException} with the HTTP status code: the
  * transient server statuses 500/502/503/504 are retryable, and 429 (Too Many
  * Requests) is a retryable throttle. An explicit classification set by codegen
- * for a modeled `retryable` error, or a `Retry-After` hint captured from the
- * response, still takes precedence.
+ * for a modeled `retryable` error, or an `x-amz-retry-after` hint captured
+ * from the response, still takes precedence.
  *
  * The using class extends `ApiException` and declares a `$httpStatusCode`
  * property (`?int`).
@@ -35,8 +35,8 @@ trait AwsErrorRetryTrait
     /**
      * Set a server-suggested wait before retrying, in seconds.
      *
-     * Called by error deserializers that read a `Retry-After` /
-     * `x-amz-retry-after` header from the response.
+     * Called by error deserializers that read the `x-amz-retry-after`
+     * header from the response.
      */
     public function setRetryAfter(?float $seconds): void
     {

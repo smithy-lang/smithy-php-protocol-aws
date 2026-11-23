@@ -16,11 +16,11 @@ use Smithy\Core\Exception\ErrorFault;
  *
  * Error deserializers build any exception class implementing this interface
  * with the AWS error code and message. Errors read from an HTTP response
- * also carry its request ID and HTTP status, and a `Retry-After` hint when
- * the response has one. Errors read from an event stream carry the error
- * code and message, with a null request ID and HTTP status. Modeled errors
- * receive the same metadata through {@see setAwsErrorMetadata()} after
- * their members are deserialized.
+ * also carry its request ID and HTTP status, and an `x-amz-retry-after`
+ * hint when the response has one. Errors read from an event stream carry the
+ * error code and message, with a null request ID and HTTP status. Modeled
+ * errors receive the same metadata through {@see setAwsErrorMetadata()}
+ * after their members are deserialized.
  */
 interface AwsErrorInterface
 {

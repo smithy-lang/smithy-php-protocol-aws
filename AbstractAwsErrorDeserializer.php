@@ -105,11 +105,10 @@ abstract class AbstractAwsErrorDeserializer extends HttpErrorDeserializer
     }
 
     /**
-     * Parse a `Retry-After` / `x-amz-retry-after` header into seconds.
+     * Parse the `x-amz-retry-after` header (milliseconds) into seconds.
      *
-     * `x-amz-retry-after` is milliseconds; a numeric `Retry-After` is seconds.
-     * The HTTP-date form of `Retry-After` is not honored (AWS services send
-     * the numeric form). Returns null when absent or unparseable.
+     * This is the only header AWS services use for a retry hint, so it is
+     * the only one read. Returns null when it is absent or not numeric.
      */
     private static function parseRetryAfter(
         ResponseInterface $response
@@ -118,11 +117,6 @@ abstract class AbstractAwsErrorDeserializer extends HttpErrorDeserializer
         $amzMillis = $response->getHeaderLine('x-amz-retry-after');
         if ($amzMillis !== '' && \is_numeric($amzMillis)) {
             return (float) $amzMillis / 1000.0;
-        }
-
-        $retryAfter = $response->getHeaderLine('retry-after');
-        if ($retryAfter !== '' && \is_numeric($retryAfter)) {
-            return (float) $retryAfter;
         }
 
         return null;
