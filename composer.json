@@ -2,7 +2,12 @@
     "name": "smithy/protocol-aws",
     "description": "AWS protocol implementations (JSON 1.0/1.1, REST JSON, REST XML, Query, EC2 Query) for Smithy PHP.",
     "type": "library",
+    "homepage": "https://github.com/smithy-lang/smithy-php",
     "license": "Apache-2.0",
+    "support": {
+        "issues": "https://github.com/smithy-lang/smithy-php/issues",
+        "source": "https://github.com/smithy-lang/smithy-php"
+    },
     "require": {
         "ext-libxml": "*",
         "ext-simplexml": "*",
