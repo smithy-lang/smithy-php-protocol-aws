@@ -24,6 +24,15 @@ use Smithy\Core\Exception\ErrorFault;
  */
 interface AwsErrorInterface
 {
+    /**
+     * Create an unmodeled error from AWS error metadata.
+     *
+     * Each implementation builds its own class with `new self()`, so
+     * subclasses keep their own constructors. A generated service exception
+     * declares this factory again to return the service type.
+     *
+     * @return self&\Throwable
+     */
     public static function fromAwsError(
         string $message,
         ErrorFault $fault,
@@ -31,7 +40,7 @@ interface AwsErrorInterface
         ?string $awsErrorCode,
         ?string $requestId,
         ?int $httpStatusCode
-    ): static;
+    ): self;
 
     /**
      * Return the AWS error discriminator.

@@ -66,7 +66,7 @@ final class AwsDocumentException extends ApiException implements
         ?string $awsErrorCode,
         ?string $requestId,
         ?int $httpStatusCode
-    ): static
+    ): self
     {
         return new self(
             new Schema(id: 'smithy.api#Unit', type: ShapeType::Structure),

@@ -18,7 +18,9 @@ Unmodeled errors are built from the operation's service exception class when
 it implements `AwsErrorInterface`, and from `AwsProtocolException` otherwise.
 The deserializer calls `fromAwsError()` with the AWS error code, request ID and
 HTTP status, and calls `setRetryAfter()` when the response has an
-`x-amz-retry-after` hint. Modeled errors that implement `AwsErrorInterface` receive the same
+`x-amz-retry-after` hint. Each `fromAwsError()` builds its own class with
+`new self()`; a generated service exception declares it again so unmodeled
+errors keep the service type. Modeled errors that implement `AwsErrorInterface` receive the same
 metadata through `setAwsErrorMetadata()` after their members are
 deserialized; the envelope message becomes the exception message when the
 modeled message is empty. `AwsErrorRetryTrait` supplies the status-based
